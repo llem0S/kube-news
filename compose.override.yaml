@@ -1,7 +1,0 @@
-services:
-  kube-news:
-    # Sobrescreve a imagem do compose.yaml
-    image: fabricioveronez/web-kube-news:${KUBE_NEWS_TAG:-latest}
-    # Adiciona mais port binds
-    ports:
-      - "8181:8181"
