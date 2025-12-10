@@ -13,10 +13,23 @@ services:
     networks: # informar qual a net que será usada
       - kube_news_net # nome da net utilizada para o container
 
-  web:
-    extends:
-      file: ./kube-news.compose.yaml
-      service: kube-news
+  kube-news:
+      container_name: kube-news-web
+      image: llem0s/kube-news:${KUBE_NEWS_TAG:-latest}
+      build:
+        context: ./src
+        dockerfile: Dockerfile
+      depends_on: #[postgre] ,pode ser informado assim ou por lista
+        - postgre
+      ports:
+        - "8080:8080"
+      environment:
+        DB_DATABASE: ${POSTGRES_DB}
+        DB_USERNAME: ${POSTGRES_USER}
+        DB_PASSWORD: ${POSTGRES_PASSWORD}
+        DB_HOST: postgre
+      networks:
+        - kube_news_net
 
 volumes: # para criar volumes no docker compose
   postgre_docker_volume:
